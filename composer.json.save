@@ -15,8 +15,8 @@
         "filp/whoops": "~2.0"
     },
     "require-dev": {
-        "fzaninotto/faker": "^1.4",
-        "mockery/mockery": "0.9.*",
+        "fzaninotto/faker": "~1.4",
+        "mockery/mockery": "",
         "phpunit/phpunit": "^7.0"
     },
     "autoload": {
