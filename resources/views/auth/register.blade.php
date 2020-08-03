@@ -26,8 +26,8 @@
                         <div class="form-group">
                             <label for="password-confirm" class="col-md-4 control-label">Confirm Password</label>
                             <input id="confirmation_token" type="hidden" name="confirmation_token" value="{{ $user->confirmation_token }}">
-                            <input id="email" type="hidden" name="email" value="{{ $user->email }}">
-                            <input id="name" type="hidden" name="name" value="{{ $user->name }}">
+{{--                            <input id="email" type="hidden" name="email" value="{{ $user->email }}">--}}
+{{--                            <input id="name" type="hidden" name="name" value="{{ $user->name }}">--}}
                             <div class="col-md-6">
                                 <input id="password-confirm" type="password" class="form-control" name="password_confirmation" required>
                             </div>

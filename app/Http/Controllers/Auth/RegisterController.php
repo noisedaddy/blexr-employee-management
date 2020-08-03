@@ -61,25 +61,9 @@ class RegisterController extends Controller
 
         $user->update(
             [
-                'name' => $request->name,
-                'email' => $request->email,
                 'password' => bcrypt($request->password)
             ]
         );
-//        event(new Registered($user = $this->create($request->all())));
-//        event(
-//            new Registered(
-//
-//            $user = $this->update(
-////            [
-////                'name' => $request->name,
-////                'email' => $request->email,
-////                'password' => bcrypt($request->password)
-////            ]
-//                $request->all()
-//            )
-//            )
-//        );
 
         $this->guard()->login($user);
 
