@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Jobs\SendEmail;
+use App\Ship;
 use App\User;
 use Spatie\Permission\Models\Role;
 use Illuminate\Http\Request;
@@ -39,8 +41,9 @@ class UsersController extends Controller
             return abort(401);
         }
         $roles = Role::get()->pluck('name', 'name');
+        $ships = Ship::get()->pluck('name', 'id');
 
-        return view('admin.users.create', compact('roles'));
+        return view('admin.users.create', compact('roles','ships'));
     }
 
     /**
@@ -54,10 +57,16 @@ class UsersController extends Controller
         if (! Gate::allows('users_manage')) {
             return abort(401);
         }
+//        $user = User::create($request->all());
         $user = User::create($request->all());
+
         $roles = $request->input('roles') ? $request->input('roles') : [];
         $user->assignRole($roles);
-
+        $user->ship()->associate($request->ships[0]);
+        $user->confirmation_token = $this->create_token();
+        if ($user->save()) {
+            dispatch(new SendEmail($user));
+        };
         return redirect()->route('admin.users.index');
     }
 
@@ -76,8 +85,9 @@ class UsersController extends Controller
         $roles = Role::get()->pluck('name', 'name');
 
         $user = User::findOrFail($id);
+        $ships = Ship::get()->pluck('name', 'name');
 
-        return view('admin.users.edit', compact('user', 'roles'));
+        return view('admin.users.edit', compact('user', 'roles', 'ships'));
     }
 
     /**
@@ -96,7 +106,8 @@ class UsersController extends Controller
         $user->update($request->all());
         $roles = $request->input('roles') ? $request->input('roles') : [];
         $user->syncRoles($roles);
-
+        $user->ship()->associate(Ship::where('name', $request->ships[0])->first()->id);
+        $user->save();
         return redirect()->route('admin.users.index');
     }
 
@@ -134,6 +145,13 @@ class UsersController extends Controller
                 $entry->delete();
             }
         }
+    }
+    /**
+     * @return string
+     */
+    protected function create_token()
+    {
+        return str_random(32);
     }
 
 }

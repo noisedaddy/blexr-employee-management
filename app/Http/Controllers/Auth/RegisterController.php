@@ -4,6 +4,8 @@ namespace App\Http\Controllers\Auth;
 
 use App\User;
 use App\Http\Controllers\Controller;
+use Illuminate\Auth\Events\Registered;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Foundation\Auth\RegistersUsers;
 
@@ -39,6 +41,51 @@ class RegisterController extends Controller
         $this->middleware('guest');
     }
 
+    public function showRegistrationForm($confirmation_token = null)
+    {
+        $user = User::where('confirmation_token', $confirmation_token)->first();
+        return view('auth.register', compact('user'));
+    }
+
+    /**
+     * Handle a registration request for the application.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function register(Request $request)
+    {
+        $this->validator($request->all())->validate();
+
+        $user = User::where('confirmation_token', $request->confirmation_token)->first();
+
+        $user->update(
+            [
+                'name' => $request->name,
+                'email' => $request->email,
+                'password' => bcrypt($request->password)
+            ]
+        );
+//        event(new Registered($user = $this->create($request->all())));
+//        event(
+//            new Registered(
+//
+//            $user = $this->update(
+////            [
+////                'name' => $request->name,
+////                'email' => $request->email,
+////                'password' => bcrypt($request->password)
+////            ]
+//                $request->all()
+//            )
+//            )
+//        );
+
+        $this->guard()->login($user);
+
+        return $this->registered($request, $user)
+            ?: redirect($this->redirectPath());
+    }
     /**
      * Get a validator for an incoming registration request.
      *
@@ -48,8 +95,6 @@ class RegisterController extends Controller
     protected function validator(array $data)
     {
         return Validator::make($data, [
-            'name' => 'required|string|max:255',
-            'email' => 'required|string|email|max:255|unique:users',
             'password' => 'required|string|min:6|confirmed',
         ]);
     }

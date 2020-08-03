@@ -13,6 +13,6 @@ class RoleSeed extends Seeder
     public function run()
     {
         $role = Role::create(['name' => 'administrator']);
-        $role->givePermissionTo('users_manage');
+        $role->givePermissionTo(['users_manage', 'ships_manage','notification_manage']);
     }
 }

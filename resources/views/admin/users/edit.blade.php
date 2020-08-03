@@ -50,11 +50,23 @@
             <div class="row">
                 <div class="col-xs-12 form-group">
                     {!! Form::label('roles', 'Roles*', ['class' => 'control-label']) !!}
-                    {!! Form::select('roles[]', $roles, old('roles') ? old('roles') : $user->roles()->pluck('name', 'name'), ['class' => 'form-control select2', 'multiple' => 'multiple', 'required' => '']) !!}
+                    {!! Form::select('roles[]', $roles, old('roles') ? old('roles') : $user->roles()->pluck('name', 'name'), ['class' => 'form-control select2', 'required' => '']) !!}
                     <p class="help-block"></p>
                     @if($errors->has('roles'))
                         <p class="help-block">
                             {{ $errors->first('roles') }}
+                        </p>
+                    @endif
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-xs-12 form-group">
+                    {!! Form::label('ships', 'Ships', ['class' => 'control-label']) !!}
+                    {!! Form::select('ships[]', $ships, old('ships') ? old('ships') : $user->ship()->pluck('name', 'id'), ['class' => 'form-control select2']) !!}
+                    <p class="help-block"></p>
+                    @if($errors->has('ships'))
+                        <p class="help-block">
+                            {{ $errors->first('ships') }}
                         </p>
                     @endif
                 </div>

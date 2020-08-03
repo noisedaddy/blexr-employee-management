@@ -20,9 +20,31 @@ class User extends Authenticatable
     use Notifiable;
     use HasRoles;
 
-    protected $fillable = ['name', 'email', 'password', 'remember_token'];
-    
-    
+//    protected $casts = [
+//        'ship_id' => 'array',
+//    ];
+
+    protected $fillable = ['name', 'email', 'password', 'ship_id' ,'remember_token'];
+
+    public static function boot()
+    {
+        parent::boot();
+        static::creating(function($model)
+        {
+            if(\Auth::check()) {
+                $user = \Auth::user();
+                $model->created_by = $user->email;
+                $model->updated_by = $user->email;
+            }
+        });
+        static::updating(function($model)
+        {
+            if(\Auth::check()) {
+                $user = \Auth::user();
+                $model->updated_by = $user->email;
+            }
+        });
+    }
     /**
      * Hash password
      * @param $input
@@ -38,7 +60,10 @@ class User extends Authenticatable
     {
         return $this->belongsToMany(Role::class, 'role_user');
     }
-    
+
+    public function ship() {
+        return $this->belongsTo(Ship::class);
+    }
     
     
 }
