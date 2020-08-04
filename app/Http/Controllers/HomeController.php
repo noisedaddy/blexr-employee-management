@@ -47,6 +47,12 @@ class HomeController extends Controller
 
 
     }
+
+    /**
+     * Store notification submissions
+     * @param Request $request
+     * @return \Illuminate\Http\RedirectResponse|void
+     */
     public function store(Request $request)
     {
         if (! \Gate::allows('notification_manage')) {
@@ -74,5 +80,16 @@ class HomeController extends Controller
 
         return redirect()->route('admin.home');
 
+    }
+
+    /**
+     * Used to populate notifications view blade
+     */
+    public function reloadNotifications(){
+
+        $role_id = \Auth::user()->roles()->get()->first()->id;
+        $notifications = Notification::where('role_id', $role_id)->where('status', null)->orderBy('id', 'ASC')->get();
+
+        return response()->json(['data'=> $notifications]);
     }
 }

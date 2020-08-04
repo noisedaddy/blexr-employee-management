@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @section('content')
-    <h3 class="page-title">@lang('global.ships.title')</h3>
+    <h3 class="page-title">@lang('global.app_ships')</h3>
     {!! Form::open(['method' => 'POST', 'route' => ['admin.ships.store']]) !!}
 
     <div class="panel panel-default">

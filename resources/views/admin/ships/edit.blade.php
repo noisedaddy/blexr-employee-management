@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @section('content')
-    <h3 class="page-title">@lang('global.app_ships.title')</h3>
+    <h3 class="page-title">@lang('global.app_ships')</h3>
     
     {!! Form::model($ship, ['method' => 'PUT', 'route' => ['admin.ships.update', $ship->id]]) !!}
 

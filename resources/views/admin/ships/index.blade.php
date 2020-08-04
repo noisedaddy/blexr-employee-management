@@ -2,7 +2,7 @@
 @extends('layouts.app')
 
 @section('content')
-    <h3 class="page-title">@lang('global.app_ships.title')</h3>
+    <h3 class="page-title">@lang('global.app_ships')</h3>
     <p>
         <a href="{{ route('admin.ships.create') }}" class="btn btn-success">@lang('global.app_add_new')</a>
     </p>

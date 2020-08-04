@@ -50,40 +50,62 @@
                 </div>
                 @else
                         <div class="panel-body table-responsive">
-                            <table class="table table-bordered table-striped {{ count($notifications) > 0 ? 'datatable' : '' }} dt-select">
+                            <table id="notification-table" class="display table table-striped dt-select dataTable" style="width:100%">
                                 <thead>
                                 <tr>
-                                    <th style="text-align:center;"><input type="checkbox" id="select-all" /></th>
+                                    <th style="text-align:center;"></th>
                                     <th>Content</th>
                                     <th>Date</th>
                                     <th>By</th>
 
                                 </tr>
                                 </thead>
-
-                                <tbody>
-                                @if (count($notifications) > 0)
-                                    @foreach ($notifications as $notification)
-                                        <tr data-entry-id="{{ $notification->id }}">
-                                            <td></td>
-
-                                            <td>{{ $notification->content }}</td>
-                                            <td>{{ $notification->created_at }}</td>
-                                            <td>{{ $notification->created_by }}</td>
-                                        </tr>
-                                    @endforeach
-                                @else
-                                    <tr>
-                                        <td colspan="9">@lang('global.app_no_entries_in_table')</td>
-                                    </tr>
-                                @endif
-                                </tbody>
                             </table>
                         </div>
-
                 @endrole
             </div>
 
         </div>
     </div>
+@stop
+
+@section('javascript')
+    <script type="text/javascript">
+
+            var time = 0;
+
+            var table = $('#notification-table').DataTable( {
+                ajax: "{{ route('admin.notification.reload') }}",
+                        "columns": [
+                            { "data": "id" },
+                            { "data": "content" },
+                            { "data": "created_at" },
+                            { "data": "created_by" }
+                        ],
+                order: [[ 3, "asc" ]]
+            } );
+
+        setInterval(function()
+        {
+            time++;
+            $.ajaxSetup({
+                headers: {
+                    'X-CSRF-TOKEN': window._token
+                }
+            });
+            $.ajax({
+                url: "{{ route('admin.notification.reload') }}",
+                dataType: "json",
+                beforeSend: function () {
+
+                },
+                success: function(response) {
+                    table.ajax.reload( null, false );
+                },
+                complete: function (xhr) {
+                    console.log('done');
+                }
+            });
+        }, 3000);//time in milliseconds
+    </script>
 @endsection
