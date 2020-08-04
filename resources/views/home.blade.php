@@ -33,27 +33,27 @@
                             @endif
                         </div>
                     </div>
-                    <div class="row">
-                        <div class="col-xs-12 form-group">
-                            {!! Form::label('ships', 'Ships', ['class' => 'control-label']) !!}
-                            {!! Form::select('ships[]', $ships, old('ships'), ['class' => 'form-control select2', 'multiple' => 'multiple', 'required' => '']) !!}
-                            <p class="help-block"></p>
-                            @if($errors->has('ships'))
-                                <p class="help-block">
-                                    {{ $errors->first('ships') }}
-                                </p>
-                            @endif
-                        </div>
-                    </div>
+{{--                    <div class="row">--}}
+{{--                        <div class="col-xs-12 form-group">--}}
+{{--                            {!! Form::label('ships', 'Ships', ['class' => 'control-label']) !!}--}}
+{{--                            {!! Form::select('ships[]', $ships, old('ships'), ['class' => 'form-control select2', 'multiple' => 'multiple', 'required' => '']) !!}--}}
+{{--                            <p class="help-block"></p>--}}
+{{--                            @if($errors->has('ships'))--}}
+{{--                                <p class="help-block">--}}
+{{--                                    {{ $errors->first('ships') }}--}}
+{{--                                </p>--}}
+{{--                            @endif--}}
+{{--                        </div>--}}
+{{--                    </div>--}}
                     {!! Form::submit(trans('global.app_send'), ['class' => 'btn btn-primary']) !!}
                     {!! Form::close() !!}
                 </div>
                 @else
                         <div class="panel-body table-responsive">
-                            <table id="notification-table" class="display table table-striped dt-select dataTable" style="width:100%">
+                            <table id="notification-table" class="display table table-striped dt-select dataTable select" style="width:100%">
                                 <thead>
                                 <tr>
-                                    <th style="text-align:center;"></th>
+                                    <th></th>
                                     <th>Content</th>
                                     <th>Date</th>
                                     <th>By</th>
@@ -82,7 +82,16 @@
                             { "data": "created_at" },
                             { "data": "created_by" }
                         ],
-                order: [[ 3, "asc" ]]
+                'columnDefs': [{
+                    'targets': 0,
+                    'searchable': false,
+                    'orderable': false,
+                    'className': 'dt-body-center',
+                    'render': function (data, type, full, meta){
+                        return '<input type="checkbox" name="id[]" value="' + $('<div/>').text(data).html() + '">';
+                    }
+                }],
+                'order': [[1, 'asc']]
             } );
 
         setInterval(function()
@@ -107,5 +116,47 @@
                 }
             });
         }, 3000);//time in milliseconds
+
+            // Handle click on checkbox to set state of "Select all" control
+            $('#notification-table tbody').on('change', 'input[type="checkbox"]', function(){
+
+                seen(this.value);
+
+                // If checkbox is not checked
+                // if(!this.checked){
+                //
+                //     var el = $('#example-select-all').get(0);
+                //     // If "Select all" control is checked and has 'indeterminate' property
+                //
+                //     if(el && el.checked && ('indeterminate' in el)){
+                //         // Set visual state of "Select all" control
+                //         // as 'indeterminate'
+                //         el.indeterminate = true;
+                //     }
+                // }
+            });
+
+            function seen(id) {
+                $.ajaxSetup({
+                    headers: {
+                        'X-CSRF-TOKEN': window._token
+                    }
+                });
+                $.ajax({
+                    url: "{{ route('admin.notification.seen') }}",
+                    method: "POST",
+                    data: { id: id} ,
+                    beforeSend: function () {
+
+                    },
+                    success: function(response) {
+                        console.log(response);
+                    },
+                    complete: function (xhr) {
+                        console.log('end');
+                    }
+                });
+            }
+
     </script>
 @endsection

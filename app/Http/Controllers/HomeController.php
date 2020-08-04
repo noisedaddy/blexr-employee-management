@@ -92,4 +92,17 @@ class HomeController extends Controller
 
         return response()->json(['data'=> $notifications]);
     }
+
+    /**
+     * Update notification status
+     * @param Request $request
+     * @return mixed
+     */
+    public function seenNotifications(Request $request){
+
+        $notification = Notification::findOrFail($request->id);
+        $notification->update(['status'=>'1']);
+
+        return $notification->status;
+    }
 }

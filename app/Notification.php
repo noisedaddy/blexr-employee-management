@@ -8,6 +8,8 @@ use Spatie\Permission\Models\Role;
 class Notification extends Model
 {
     protected $table = 'notifications';
+    protected $fillable = ['status', 'content'];
+
     public static function boot()
     {
         parent::boot();

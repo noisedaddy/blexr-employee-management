@@ -34,6 +34,7 @@ Route::group(['middleware' => ['auth'], 'prefix' => 'admin', 'as' => 'admin.'], 
     Route::get('/home', 'HomeController@index')->name('home');
     Route::post('/notification', 'HomeController@store')->name('notification.store');
     Route::get('reload_notifications', 'HomeController@reloadNotifications')->name('notification.reload');
+    Route::post('seen_notifications', 'HomeController@seenNotifications')->name('notification.seen');
     Route::resource('permissions', 'Admin\PermissionsController');
     Route::post('permissions_mass_destroy', ['uses' => 'Admin\PermissionsController@massDestroy', 'as' => 'permissions.mass_destroy']);
     Route::resource('roles', 'Admin\RolesController');
