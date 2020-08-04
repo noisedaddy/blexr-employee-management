@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Jobs\SendEmail;
 use App\Ship;
 use App\User;
+use Illuminate\Support\Str;
 use Spatie\Permission\Models\Role;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Gate;
@@ -151,7 +152,8 @@ class UsersController extends Controller
      */
     protected function create_token()
     {
-        return str_random(32);
+        return Str::random(32);
+//        return str_random(32);
     }
 
 }

@@ -53,7 +53,7 @@
                             <table id="notification-table" class="display table table-striped dt-select dataTable select" style="width:100%">
                                 <thead>
                                 <tr>
-                                    <th></th>
+                                    <th>seen</th>
                                     <th>Content</th>
                                     <th>Date</th>
                                     <th>By</th>
@@ -120,23 +120,6 @@
             // Handle click on checkbox to set state of "Select all" control
             $('#notification-table tbody').on('change', 'input[type="checkbox"]', function(){
 
-                seen(this.value);
-
-                // If checkbox is not checked
-                // if(!this.checked){
-                //
-                //     var el = $('#example-select-all').get(0);
-                //     // If "Select all" control is checked and has 'indeterminate' property
-                //
-                //     if(el && el.checked && ('indeterminate' in el)){
-                //         // Set visual state of "Select all" control
-                //         // as 'indeterminate'
-                //         el.indeterminate = true;
-                //     }
-                // }
-            });
-
-            function seen(id) {
                 $.ajaxSetup({
                     headers: {
                         'X-CSRF-TOKEN': window._token
@@ -145,7 +128,7 @@
                 $.ajax({
                     url: "{{ route('admin.notification.seen') }}",
                     method: "POST",
-                    data: { id: id} ,
+                    data: { id: this.value} ,
                     beforeSend: function () {
 
                     },
@@ -156,7 +139,9 @@
                         console.log('end');
                     }
                 });
-            }
+
+            });
+
 
     </script>
 @endsection
