@@ -26,7 +26,7 @@ class UpdateUsersRequest extends FormRequest
             'name' => 'required',
             'email' => 'required|email|unique:users,email,'.$this->route('user'),
             'roles' => 'required',
-            'ships' => 'required',
+//            'ships' => 'required',
         ];
     }
 }

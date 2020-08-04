@@ -48,7 +48,7 @@
 {{--            </div>--}}
             <div class="row">
                 <div class="col-xs-12 form-group">
-                    {!! Form::label('roles', 'Roles*', ['class' => 'control-label']) !!}
+                    {!! Form::label('roles', 'Ranks*', ['class' => 'control-label']) !!}
                     {!! Form::select('roles[]', $roles, old('roles'), ['class' => 'form-control select2',  'required' => '']) !!}
                     <p class="help-block"></p>
                     @if($errors->has('roles'))
@@ -61,7 +61,7 @@
             <div class="row">
                 <div class="col-xs-12 form-group">
                     {!! Form::label('ships', 'Ships', ['class' => 'control-label']) !!}
-                    {!! Form::select('ships[]', $ships, old('ships'), ['class' => 'form-control select2', 'required' => '']) !!}
+                    {!! Form::select('ships[]', $ships, old('ships'), ['class' => 'form-control select2']) !!}
                     <p class="help-block"></p>
                     @if($errors->has('ships'))
                         <p class="help-block">

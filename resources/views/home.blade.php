@@ -23,7 +23,7 @@
                     </div>
                     <div class="row">
                         <div class="col-xs-12 form-group">
-                            {!! Form::label('roles', 'Roles*', ['class' => 'control-label']) !!}
+                            {!! Form::label('roles', 'Ranks*', ['class' => 'control-label']) !!}
                             {!! Form::select('roles[]', $roles, old('roles'), ['class' => 'form-control select2', 'multiple' => 'multiple', 'required' => '']) !!}
                             <p class="help-block"></p>
                             @if($errors->has('roles'))

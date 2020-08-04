@@ -58,12 +58,13 @@ class UsersController extends Controller
         if (! Gate::allows('users_manage')) {
             return abort(401);
         }
-//        $user = User::create($request->all());
         $user = User::create($request->all());
 
         $roles = $request->input('roles') ? $request->input('roles') : [];
         $user->assignRole($roles);
-        $user->ship()->associate($request->ships[0]);
+        if (! is_null($request->ships) && isset($request->ships)) {
+            $user->ship()->associate($request->ships[0]);
+        }
         $user->confirmation_token = $this->create_token();
         if ($user->save()) {
             dispatch(new SendEmail($user));
@@ -107,7 +108,9 @@ class UsersController extends Controller
         $user->update($request->all());
         $roles = $request->input('roles') ? $request->input('roles') : [];
         $user->syncRoles($roles);
-        $user->ship()->associate(Ship::where('name', $request->ships[0])->first()->id);
+        if (! is_null($request->ships) && isset($request->ships)) {
+            $user->ship()->associate(Ship::where('name', $request->ships[0])->first()->id);
+        }
         $user->save();
         return redirect()->route('admin.users.index');
     }

@@ -26,7 +26,7 @@ class CreateUsersTable extends Migration
 
             $table->foreign('ship_id')//id field on users tab;e
             ->references('id')//references id field on users table
-            ->on('ships');//users table
+            ->on('ships')->onDelete('cascade');
 
         });
     }
