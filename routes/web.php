@@ -1,33 +1,34 @@
 <?php
-Route::get('/', function () { return redirect('/admin/home'); });
+//Route::get('/', function () { return redirect('/admin/home'); });
+
 
 // Authentication Routes...
-$this->get('login', 'Auth\LoginController@showLoginForm')->name('auth.login');
-$this->post('login', 'Auth\LoginController@login')->name('auth.login');
-$this->post('logout', 'Auth\LoginController@logout')->name('auth.logout');
+Route::get('login', 'Auth\LoginController@showLoginForm')->name('auth.login');
+Route::post('login', 'Auth\LoginController@login')->name('auth.login');
+Route::post('logout', 'Auth\LoginController@logout')->name('auth.logout');
 
-$this->get('register/{confirmation_token?}', 'Auth\RegisterController@showRegistrationForm')->name('register');
-$this->post('register', 'Auth\RegisterController@register');
-$this->post('register/verification', '\App\Http\Controllers\Auth\RegisterController@verification')
+Route::get('register/{confirmation_token?}', 'Auth\RegisterController@showRegistrationForm')->name('register');
+Route::post('register', 'Auth\RegisterController@register');
+Route::post('register/verification', '\App\Http\Controllers\Auth\RegisterController@verification')
     ->name('register.verification');
-$this->get('register/verification', '\App\Http\Controllers\Auth\RegisterController@verify')
+Route::get('register/verification', '\App\Http\Controllers\Auth\RegisterController@verify')
     ->name('verification.index');
 // resend the token
-$this->match(['get', 'post'], 'register/verification/resend', '\App\Http\Controllers\Auth\RegisterController@resend')
+Route::match(['get', 'post'], 'register/verification/resend', '\App\Http\Controllers\Auth\RegisterController@resend')
     ->name('verification.resend');
 // confirm and finish the registration process and log in the user
-$this->get('register/confirmation/{token?}', '\App\Http\Controllers\Auth\RegisterController@confirmation')
+Route::get('register/confirmation/{token?}', '\App\Http\Controllers\Auth\RegisterController@confirmation')
     ->name('register.confirmation');
 
 // Change Password Routes...
-$this->get('change_password', 'Auth\ChangePasswordController@showChangePasswordForm')->name('auth.change_password');
-$this->patch('change_password', 'Auth\ChangePasswordController@changePassword')->name('auth.change_password');
+Route::get('change_password', 'Auth\ChangePasswordController@showChangePasswordForm')->name('auth.change_password');
+Route::patch('change_password', 'Auth\ChangePasswordController@changePassword')->name('auth.change_password');
 
 // Password Reset Routes...
-$this->get('password/reset', 'Auth\ForgotPasswordController@showLinkRequestForm')->name('auth.password.reset');
-$this->post('password/email', 'Auth\ForgotPasswordController@sendResetLinkEmail')->name('auth.password.reset');
-$this->get('password/reset/{token}', 'Auth\ResetPasswordController@showResetForm')->name('password.reset');
-$this->post('password/reset', 'Auth\ResetPasswordController@reset')->name('auth.password.reset');
+Route::get('password/reset', 'Auth\ForgotPasswordController@showLinkRequestForm')->name('auth.password.reset');
+Route::post('password/email', 'Auth\ForgotPasswordController@sendResetLinkEmail')->name('auth.password.reset');
+Route::get('password/reset/{token}', 'Auth\ResetPasswordController@showResetForm')->name('password.reset');
+Route::post('password/reset', 'Auth\ResetPasswordController@reset')->name('auth.password.reset');
 
 Route::group(['middleware' => ['auth'], 'prefix' => 'admin', 'as' => 'admin.'], function () {
     Route::get('/home', 'HomeController@index')->name('home');
