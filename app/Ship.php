@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Ship extends Model
 {
-    protected $fillable = ['name'];
+    protected $fillable = ['name','file'];
 
 
     public static function boot()

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Http\Controllers\Traits\FileUploadTrait;
 use App\Http\Requests\Admin\StoreUsersRequest;
 use App\Http\Requests\Admin\UpdateUsersRequest;
 use App\Ship;
@@ -12,6 +13,8 @@ use Spatie\Permission\Models\Role;
 
 class ShipController extends Controller
 {
+
+    use FileUploadTrait;
     public function index()
     {
         if (! \Gate::allows('ships_manage')) {
@@ -45,10 +48,15 @@ class ShipController extends Controller
         }
 
         $ship = Ship::create($request->all());
+        $file = $this->saveFiles($request);
+
         $users = collect($request->users)->map(function ($user_id) {
             return User::find($user_id);
         });
+
         $ship->user()->saveMany($users);
+        $ship->update(['file'=> $file->file]);
+
 
         return redirect()->route('admin.ships.index');
     }
@@ -86,6 +94,7 @@ class ShipController extends Controller
         }
 //        dd($request);
         $ship = Ship::findOrFail($id);
+        $this->saveFiles($request);
         $ship->update($request->all());
         $users = collect($request->users)->map(function ($user) {
             return User::where('name', $user)->get();

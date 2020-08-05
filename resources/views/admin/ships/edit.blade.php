@@ -1,5 +1,17 @@
 @extends('layouts.app')
+<style>
+    img {
+        border: 1px solid #ddd; /* Gray border */
+        border-radius: 4px;  /* Rounded border */
+        padding: 5px; /* Some padding */
+        width: 150px; /* Set a small width */
+    }
 
+    /* Add a hover effect (blue shadow) */
+    img:hover {
+        box-shadow: 0 0 2px 1px rgba(0, 140, 186, 0.5);
+    }
+</style>
 @section('content')
     <h3 class="page-title">@lang('global.app_ships')</h3>
     
@@ -21,6 +33,17 @@
                             {{ $errors->first('name') }}
                         </p>
                     @endif
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-xs-6 form-group">
+                    <a target="_blank" href="#">
+                        <img src="{{ is_null($ship->file) ? asset('adminlte/img/default-50x50.gif') : asset('uploads') . '/' . $ship->file }}" alt="" style="width:150px">
+                    </a>
+                </div>
+                <div class="col-xs-6 form-group">
+                    {!! Form::label('file', 'image*', ['class' => 'control-label']) !!}
+                    {!! Form::file('file') !!}
                 </div>
             </div>
             <div class="row">

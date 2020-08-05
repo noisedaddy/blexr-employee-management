@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Http\Controllers\Traits\FileUploadTrait;
 use App\Jobs\SendEmail;
 use App\Ship;
 use App\User;

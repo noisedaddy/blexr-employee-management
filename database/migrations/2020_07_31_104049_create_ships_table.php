@@ -17,7 +17,7 @@ class CreateShipsTable extends Migration
             $table->increments('id');
             $table->string('name');
             $table->string('serial_number', 8)->unique();
-            $table->string('image_path')->nullable();
+            $table->string('file')->nullable();
             $table->string('created_by')->nullable();
             $table->string('updated_by')->nullable();
             $table->timestamps();

@@ -1,41 +1,24 @@
-## Laravel Roles Permissions Admin - Spatie version
-
-This is a Laravel 5.4 adminpanel starter project with roles-permissions management based on [Spatie Laravel-permission package](https://github.com/spatie/laravel-permission), [AdminLTE theme](https://adminlte.io/) and [Datatables.net](https://datatables.net).
-
-We've also created almost identical project based on Joseph Silber's Bouncer package: [see here](https://github.com/LaravelDaily/laravel-roles-permissions-bouncer)
-
-Part of this project was generated automatically by [QuickAdminPanel system](https://quickadminpanel.com/).
-
-![Larancer screenshot](http://webcoderpro.com/roles-permissions-manager-spatie.png)
-
 ## Usage
-
-This is not a package - it's a full Laravel project that you should use as a starter boilerplate, and then add your own custom functionality.
-
+- Add permissions to shell script chmod +x ./scripts/setup.sh
+- Run ./scripts/setup.sh
+- OR 
 - Clone the repository with `git clone`
 - Copy `.env.example` file to `.env` and edit database credentials there
 - Run `composer install`
+- Run `composer update`
 - Run `php artisan key:generate`
 - Run `php artisan migrate --seed` (it has some seeded data - see below)
-- That's it: launch the main URL and login with default credentials `admin@admin.com` - `password`
+- If error occurs after migration, run `sudo php artisan cache:forget spatie.permission.cache && sudo php artisan cache:clear` to clear permission cache
+- Create public/uploads folder add write permissions to `storage, bootstrap and public/uploads` folder
+- Launch the main URL and login with default credentials `admin@admin.com` - `123456`
 
-This boilerplate has one role (`administrator`), one permission (`users_manage`) and one administrator user.
+- This boilerplate has one role (`administrator`), 4 permissions (`users_manage`,`ships_manage`,`notification_manage`,`notification_view`) and one administrator user.
+- Permissions `users_manage`,`ships_manage`,`notification_manage`
 
-With that user you can create more roles/permissions/users, and then use them in your code, by using functionality like `Gate` or `@can`, as in default Laravel, or with help of Spatie's package methods.
 
-## License
-
-The [MIT license](http://opensource.org/licenses/MIT).
-
-## Notice
-
-We are not responsible for any functionality or bugs in **AdminLTE**, **Laravel-permission** or **Datatables** packages or their future versions, if you find bugs there - please contact vendors directly.
-
----
-
-## More from our LaravelDaily Team
-
-- Check out our adminpanel generator QuickAdminPanel: [Laravel version](https://quickadminpanel.com) and [Vue.js version](https://vue.quickadminpanel.com)
-- Follow our [Twitter](https://twitter.com/dailylaravel) and [Blog](http://laraveldaily.com/blog)
-- Subscribe to our [newsletter with 20+ Laravel links every Thursday](http://laraveldaily.com/weekly-laravel-newsletter/)
-- Subscribe to our [YouTube channel Laravel Business](https://www.youtube.com/channel/UCTuplgOBi6tJIlesIboymGA)
+## App Usage
+- Login as admin@admin.com/123456
+- Add new rank and assign "notification_view" permission to it
+- Create new user(crew member) and assign him newly created rank
+- Create ship and assign users to it
+- Log in as user with different rank and go to dashboard route to see all your notifications
