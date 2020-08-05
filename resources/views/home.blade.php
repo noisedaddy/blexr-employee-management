@@ -112,7 +112,7 @@
                     table.ajax.reload( null, false );
                 },
                 complete: function (xhr) {
-                    console.log('done');
+
                 }
             });
         }, 3000);//time in milliseconds
@@ -136,7 +136,7 @@
                         console.log(response);
                     },
                     complete: function (xhr) {
-                        console.log('end');
+
                     }
                 });
 
