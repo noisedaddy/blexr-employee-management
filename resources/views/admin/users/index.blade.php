@@ -29,7 +29,7 @@
                 <tbody>
                     @if (count($users) > 0)
                         @foreach ($users as $user)
-                            <tr data-entry-id="{{ $user->id }}">
+                            <tr style="{{ is_null($user->password) ? 'color: red' : ''}}"  data-entry-id="{{ $user->id }}">
                                 <td></td>
 
                                 <td>{{ $user->name }}</td>
