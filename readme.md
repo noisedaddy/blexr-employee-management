@@ -15,7 +15,6 @@
 - This boilerplate has one role (`administrator`), 4 permissions (`users_manage`,`ships_manage`,`notification_manage`,`notification_view`) and one administrator user.
 - Permissions `users_manage`,`ships_manage`,`notification_manage`
 
-
 ## App Usage
 - Login as admin@admin.com/123456
 - Add new rank and assign "notification_view" permission to it
