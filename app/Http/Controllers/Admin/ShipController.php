@@ -92,7 +92,7 @@ class ShipController extends Controller
         if (! \Gate::allows('ships_manage')) {
             return abort(401);
         }
-//        dd($request);
+
         $ship = Ship::findOrFail($id);
         $this->saveFiles($request);
         $ship->update($request->all());
