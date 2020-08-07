@@ -94,12 +94,13 @@ class ShipController extends Controller
         }
 
         $ship = Ship::findOrFail($id);
-        $this->saveFiles($request);
+        $file = $this->saveFiles($request);
         $ship->update($request->all());
         $users = collect($request->users)->map(function ($user) {
             return User::where('name', $user)->get();
         });
 
+        $ship->update(['file'=> $file->file]);
         //@@todo associate users to ship
 //        $ship->user()->saveMany($users);
 

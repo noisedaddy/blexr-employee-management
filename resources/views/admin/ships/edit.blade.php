@@ -15,7 +15,7 @@
 @section('content')
     <h3 class="page-title">@lang('global.app_ships')</h3>
     
-    {!! Form::model($ship, ['method' => 'PUT', 'route' => ['admin.ships.update', $ship->id]]) !!}
+    {!! Form::model($ship, ['method' => 'PUT', 'route' => ['admin.ships.update', $ship->id],'files'=>'true']) !!}
 
     <div class="panel panel-default">
         <div class="panel-heading">
