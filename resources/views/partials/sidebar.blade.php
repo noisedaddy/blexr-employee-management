@@ -8,7 +8,7 @@
             <li class="{{ $request->segment(1) == 'home' ? 'active' : '' }}">
                 <a href="{{ url('/admin/home') }}">
                     <i class="fa fa-wrench"></i>
-                    <span class="title">@lang('global.app_dashboard')</span>
+                    <span class="title">@lang('global.app_requests')</span>
                 </a>
             </li>
             
@@ -48,14 +48,6 @@
                         </a>
                     </li>
                 </ul>
-            </li>
-            @endcan
-            @can('ships_manage')
-            <li class="{{ $request->segment(1) == 'ships' ? 'active' : '' }}">
-                <a href="{{ route('admin.ships.index') }}">
-                    <i class="fa fa-wrench"></i>
-                    <span class="title">@lang('global.app_ships')</span>
-                </a>
             </li>
             @endcan
             <li class="{{ $request->segment(1) == 'change_password' ? 'active' : '' }}">

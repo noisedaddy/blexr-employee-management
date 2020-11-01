@@ -3,66 +3,68 @@
 @section('content')
     <div class="row">
         <div class="col-md-10">
-
+            @role('employee')
             <div class="panel panel-default">
-                <div class="panel-heading">Notifications</div>
-                @role('administrator')
+                <div class="panel-heading">Work From Home Requests</div>
                 <div class="panel-body">
+
+
                     {!! Form::open(['method' => 'POST', 'route' => ['admin.notification.store']]) !!}
-                    <div class="row">
-                        <div class="col-xs-12 form-group">
-                            {!! Form::label('content', 'Content*', ['class' => 'control-label']) !!}
-                            {!! Form::text('content', old('content'), ['class' => 'form-control', 'placeholder' => '', 'required' => '']) !!}
-                            <p class="help-block"></p>
-                            @if($errors->has('content'))
-                                <p class="help-block">
-                                    {{ $errors->first('content') }}
-                                </p>
-                            @endif
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-xs-12 form-group">
-                            {!! Form::label('roles', 'Ranks*', ['class' => 'control-label']) !!}
-                            {!! Form::select('roles[]', $roles, old('roles'), ['class' => 'form-control select2', 'multiple' => 'multiple', 'required' => '']) !!}
-                            <p class="help-block"></p>
-                            @if($errors->has('roles'))
-                                <p class="help-block">
-                                    {{ $errors->first('roles') }}
-                                </p>
-                            @endif
-                        </div>
-                    </div>
 {{--                    <div class="row">--}}
 {{--                        <div class="col-xs-12 form-group">--}}
-{{--                            {!! Form::label('ships', 'Ships', ['class' => 'control-label']) !!}--}}
-{{--                            {!! Form::select('ships[]', $ships, old('ships'), ['class' => 'form-control select2', 'multiple' => 'multiple', 'required' => '']) !!}--}}
+{{--                            {!! Form::label('content', 'Content*', ['class' => 'control-label']) !!}--}}
+{{--                            {!! Form::text('content', old('content'), ['class' => 'form-control', 'placeholder' => '', 'required' => '']) !!}--}}
 {{--                            <p class="help-block"></p>--}}
-{{--                            @if($errors->has('ships'))--}}
+{{--                            @if($errors->has('content'))--}}
 {{--                                <p class="help-block">--}}
-{{--                                    {{ $errors->first('ships') }}--}}
+{{--                                    {{ $errors->first('content') }}--}}
 {{--                                </p>--}}
 {{--                            @endif--}}
 {{--                        </div>--}}
 {{--                    </div>--}}
+                    <div class="row">
+                        <div class='col-md-5'>
+                            <div class="form-group">
+                                <div class='input-group date' id='datetimepicker6'>
+                                    <input type='text' class="form-control" id="start_timedate" name="start_timedate" placeholder="Start date/time"/>
+                                    <span class="input-group-addon">
+                                    <span class="glyphicon glyphicon-calendar"></span>
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class='col-md-5'>
+                            <div class="form-group">
+                                <div class='input-group date' id='datetimepicker7'>
+                                    <input type='text' class="form-control" id="end_timedate" name="end_timedate" placeholder="End date/time"/>
+                                    <span class="input-group-addon">
+                                    <span class="glyphicon glyphicon-calendar"></span>
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
                     {!! Form::submit(trans('global.app_send'), ['class' => 'btn btn-primary']) !!}
                     {!! Form::close() !!}
+
                 </div>
-                @else
+                @endrole
                         <div class="panel-body table-responsive">
                             <table id="notification-table" class="display table table-striped dt-select dataTable select" style="width:100%">
                                 <thead>
                                 <tr>
-                                    <th>seen</th>
+                                    <th>Action</th>
                                     <th>Content</th>
-                                    <th>Date</th>
+                                    <th>Date Created</th>
                                     <th>By</th>
+                                    <th>Request Status</th>
+                                    <th>Cancel Request</th>
 
                                 </tr>
                                 </thead>
                             </table>
                         </div>
-                @endrole
             </div>
 
         </div>
@@ -72,28 +74,65 @@
 @section('javascript')
     <script type="text/javascript">
 
+        $(function () {
+            $('#datetimepicker6').datetimepicker();
+            $('#datetimepicker7').datetimepicker({
+                useCurrent: false //Important! See issue #1075
+            });
+            $("#datetimepicker6").on("dp.change", function (e) {
+                $('#datetimepicker7').data("DateTimePicker").minDate(e.date);
+            });
+            $("#datetimepicker7").on("dp.change", function (e) {
+                $('#datetimepicker6').data("DateTimePicker").maxDate(e.date);
+            });
+
+            console.log();
+        });
+
+            var role = {!! json_encode($role) !!};
+
             var time = 0;
 
             var table = $('#notification-table').DataTable( {
                 ajax: "{{ route('admin.notification.reload') }}",
                         "columns": [
-                            { "data": "id" },
+                            { "data": "id" , "bVisible": role == 'administrator' ? true : false },
                             { "data": "content" },
                             { "data": "created_at" },
-                            { "data": "created_by" }
+                            { "data": "created_by" },
+                            { "data": "status" },
+                            { "data": "id", "bVisible": role == 'administrator' ? false : true }
                         ],
-                'columnDefs': [{
+                'columnDefs': [
+                    {
                     'targets': 0,
                     'searchable': false,
                     'orderable': false,
                     'className': 'dt-body-center',
                     'render': function (data, type, full, meta){
-                        return '<input type="checkbox" name="id[]" value="' + $('<div/>').text(data).html() + '">';
+                            if (full.status != 'cancel') {
+                                return '<button id="accepted_'+$('<div/>').text(data).html()+'" name="accepted" onclick="actionRequest(this)" class="btn btn-xs btn-info">Accept</button>' +
+                                    '<button id="rejected_'+$('<div/>').text(data).html()+'" name="rejected" onclick="actionRequest(this)" class="btn btn-xs btn-danger' +
+                                    '">Reject</button>';
+                            } else {
+                                return '';
+                            }
+                        }
+                    },
+                    {
+                        'targets': 5,
+                        'searchable': false,
+                        'orderable': false,
+                        'className': 'dt-body-center',
+                        'render': function (data, type, full, meta){
+                            return '<button id="cancel_'+$('<div/>').text(data).html()+'" name="cancel" onclick="actionRequest(this)" class="btn btn-xs btn-danger">Cancel</button>';
+                        }
                     }
-                }],
+                ],
                 'order': [[1, 'asc']]
             } );
 
+            // set interval for reloading datatable source
         setInterval(function()
         {
             time++;
@@ -117,8 +156,15 @@
             });
         }, 3000);//time in milliseconds
 
-            // Handle click on checkbox to set state of "Select all" control
-            $('#notification-table tbody').on('change', 'input[type="checkbox"]', function(){
+            /**
+             * Change request status field in Notification table. Used in button onclick event
+             * @param data
+             */
+            function actionRequest(data) {
+
+                var rowID = data.id;
+                rowID = rowID.match(/\d+/)[0];
+                var requestStatus = data.name;
 
                 $.ajaxSetup({
                     headers: {
@@ -126,9 +172,9 @@
                     }
                 });
                 $.ajax({
-                    url: "{{ route('admin.notification.seen') }}",
+                    url: "{{ route('admin.notification.status') }}",
                     method: "POST",
-                    data: { id: this.value} ,
+                    data: { id: rowID, status: requestStatus} ,
                     beforeSend: function () {
 
                     },
@@ -140,8 +186,7 @@
                     }
                 });
 
-            });
-
+            }
 
     </script>
 @endsection

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Helpers\DataFormat;
 use App\Http\Requests;
 use App\Notification;
 use App\Ship;
@@ -22,29 +23,14 @@ class HomeController extends Controller
     }
 
     /**
-     * Show the application dashboard.
+     * Show the application and request approval dashboard.
      *
      * @return \Illuminate\Http\Response
      */
     public function index()
     {
-
-
-        if ( \Gate::allows('notification_manage')) {
-
-            $roles = Role::get()->pluck('name', 'id');
-            $ships = Ship::get()->pluck('name', 'id');
-
-            return view('home', compact('roles','ships'));
-        }
-
-        if ( \Gate::allows('notification_view')) {
-
-            $role_id = \Auth::user()->roles()->get()->first()->id;
-            $notifications = Notification::where('role_id', $role_id)->where('status', null)->get();
-            return view('home', compact('notifications'));
-        }
-
+        $role = \Auth::user()->roles()->get()->first()->name;
+        return view('home', compact('role'));
 
     }
 
@@ -55,53 +41,52 @@ class HomeController extends Controller
      */
     public function store(Request $request)
     {
+
+        $content = DataFormat::jb_verbose_date_range($request->start_timedate, $request->end_timedate);
+
         if (! \Gate::allows('notification_manage')) {
             return abort(401);
         }
 
+        $role = User::whereHas("roles", function($q){ $q->where("name", "administrator"); })->first();
+
         $notification = new Notification();
+        $notification->content = $content;
+        $notification->role_id = $role->id;
+        $notification->user_id = \Auth::user()->id;
+        $notification->status = config('app.request_status.pending');
+        $notification->save();
 
-//        $users = User::with('roles')->get();
-//        $nonmembers = $users->add(function($user, $key){
-//            return $user->hasRole('Sailor');
-//        });
-//        dd($nonmembers);
-
-//        $user = User::whereHas("roles", function($q){ $q->where("name", "Sailor"); })->get(); users wit roles Sailor
-
-            foreach($request->roles as $role){
-
-                $notification->content = $request->content;
-                $notification->role_id = $role;
-                $notification->ship_id = null;
-                $notification->status = null;
-                $notification->save();
-            }
 
         return redirect()->route('admin.home');
 
     }
 
     /**
-     * Used to populate notifications view blade
+     * Reload notification datatable from admin/home route on every 3 sec
+     * @return \Illuminate\Http\JsonResponse
      */
     public function reloadNotifications(){
 
-        $role_id = \Auth::user()->roles()->get()->first()->id;
-        $notifications = Notification::where('role_id', $role_id)->where('status', null)->orderBy('id', 'ASC')->get();
+        if (\Auth::user()->hasRole('administrator')) {
+            $role_id = \Auth::user()->roles()->get()->first()->id;
+            $notifications = Notification::where('role_id', $role_id)->orderBy('id', 'ASC')->get();
+        } else {
+            $notifications = Notification::where('user_id', \Auth::user()->id)->orderBy('id', 'ASC')->get();
+        }
 
         return response()->json(['data'=> $notifications]);
     }
 
     /**
-     * Update notification status
+     * Update notification status via ajax call admin/home route
      * @param Request $request
      * @return mixed
      */
-    public function seenNotifications(Request $request){
+    public function requestStatusChange(Request $request){
 
         $notification = Notification::findOrFail($request->id);
-        $notification->update(['status'=>'1']);
+        $notification->update(['status'=>$request->status]);
 
         return $notification->status;
     }

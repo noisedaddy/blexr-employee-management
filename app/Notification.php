@@ -30,8 +30,8 @@ class Notification extends Model
         });
     }
 
-    public function ship(){
-        $this->belongsTo(Ship::class);
+    public function user(){
+        $this->belongsTo(User::class);
     }
 
     public function roles(){

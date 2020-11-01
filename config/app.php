@@ -12,7 +12,7 @@ return [
     | any other location as required by the application or its packages.
     */
 
-    'name' => 'Ship Manager',
+    'name' => 'Blexr Employee Manager',
 
     /*
     |--------------------------------------------------------------------------
@@ -249,5 +249,11 @@ return [
         'Html'         => Collective\Html\HtmlFacade::class,
         
     ],
+
+    'request_status' => [
+        'pending' => 'pending',
+        'accepted' => 'accepted',
+        'rejected' => 'rejected'
+    ]
 
 ];

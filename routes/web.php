@@ -1,12 +1,13 @@
 <?php
 Route::get('/', function () { return redirect('/admin/home'); });
-
+//Route::get('/', 'HomeController@index')->name('home');
 
 // Authentication Routes...
 Route::get('login', 'Auth\LoginController@showLoginForm')->name('auth.login');
 Route::post('login', 'Auth\LoginController@login')->name('auth.login');
 Route::post('logout', 'Auth\LoginController@logout')->name('auth.logout');
 
+// Registration routes
 Route::get('register/{confirmation_token?}', 'Auth\RegisterController@showRegistrationForm')->name('register');
 Route::post('register', 'Auth\RegisterController@register');
 Route::post('register/verification', '\App\Http\Controllers\Auth\RegisterController@verification')
@@ -30,11 +31,12 @@ Route::post('password/email', 'Auth\ForgotPasswordController@sendResetLinkEmail'
 Route::get('password/reset/{token}', 'Auth\ResetPasswordController@showResetForm')->name('password.reset');
 Route::post('password/reset', 'Auth\ResetPasswordController@reset')->name('auth.password.reset');
 
+//Authenticate routes for users with different roles
 Route::group(['middleware' => ['auth'], 'prefix' => 'admin', 'as' => 'admin.'], function () {
     Route::get('/home', 'HomeController@index')->name('home');
     Route::post('/notification', 'HomeController@store')->name('notification.store');
     Route::get('reload_notifications', 'HomeController@reloadNotifications')->name('notification.reload');
-    Route::post('seen_notifications', 'HomeController@seenNotifications')->name('notification.seen');
+    Route::post('request_status', 'HomeController@requestStatusChange')->name('notification.status');
     Route::resource('permissions', 'Admin\PermissionsController');
     Route::post('permissions_mass_destroy', ['uses' => 'Admin\PermissionsController@massDestroy', 'as' => 'permissions.mass_destroy']);
     Route::resource('roles', 'Admin\RolesController');

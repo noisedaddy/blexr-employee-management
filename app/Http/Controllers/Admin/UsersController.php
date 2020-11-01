@@ -43,9 +43,9 @@ class UsersController extends Controller
             return abort(401);
         }
         $roles = Role::get()->pluck('name', 'name');
-        $ships = Ship::get()->pluck('name', 'id');
+//        $ships = Ship::get()->pluck('name', 'id');
 
-        return view('admin.users.create', compact('roles','ships'));
+        return view('admin.users.create', compact('roles'));
     }
 
     /**
@@ -63,9 +63,9 @@ class UsersController extends Controller
 
         $roles = $request->input('roles') ? $request->input('roles') : [];
         $user->assignRole($roles);
-        if (! is_null($request->ships) && isset($request->ships)) {
-            $user->ship()->associate($request->ships[0]);
-        }
+//        if (! is_null($request->ships) && isset($request->ships)) {
+//            $user->ship()->associate($request->ships[0]);
+//        }
         $user->confirmation_token = $this->create_token();
         if ($user->save()) {
             dispatch(new SendEmail($user));
@@ -88,9 +88,9 @@ class UsersController extends Controller
         $roles = Role::get()->pluck('name', 'name');
 
         $user = User::findOrFail($id);
-        $ships = Ship::get()->pluck('name', 'name');
+//        $ships = Ship::get()->pluck('name', 'name');
 
-        return view('admin.users.edit', compact('user', 'roles', 'ships'));
+        return view('admin.users.edit', compact('user', 'roles'));
     }
 
     /**
@@ -109,9 +109,9 @@ class UsersController extends Controller
         $user->update($request->all());
         $roles = $request->input('roles') ? $request->input('roles') : [];
         $user->syncRoles($roles);
-        if (! is_null($request->ships) && isset($request->ships)) {
-            $user->ship()->associate(Ship::where('name', $request->ships[0])->first()->id);
-        }
+//        if (! is_null($request->ships) && isset($request->ships)) {
+//            $user->ship()->associate(Ship::where('name', $request->ships[0])->first()->id);
+//        }
         $user->save();
         return redirect()->route('admin.users.index');
     }
