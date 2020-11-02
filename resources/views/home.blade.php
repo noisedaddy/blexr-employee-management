@@ -87,10 +87,6 @@
             });
 
             $("#datetimepicker6").on("dp.change", function (e) {
-                // console.log(new Date(e.date));
-                // $('#datetimepicker7').data("DateTimePicker").date(new Date(e.date));
-                // $('#datetimepicker7').data("DateTimePicker").maxDate(e.date);
-                // $('#datetimepicker7').data("DateTimePicker").minDate(e.date);
 
             });
             $("#datetimepicker3").on("dp.change", function (e) {
@@ -202,6 +198,21 @@
                 });
 
             }
+
+            //Start/End validation time
+        $("form").submit(function(){
+
+            var start = $('#datetimepicker3').data("DateTimePicker").date();
+            var end = $('#datetimepicker4').data("DateTimePicker").date();
+
+            if ((start == null) && (end == null)) return true;
+
+            if (start >= end) {
+                alert("Please enter proper date. End time smaller then the Start time.")
+                return false;
+            }
+
+        });
 
     </script>
 @endsection
