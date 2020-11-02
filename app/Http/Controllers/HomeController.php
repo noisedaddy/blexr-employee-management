@@ -42,7 +42,7 @@ class HomeController extends Controller
     public function store(Request $request)
     {
 
-        $content = DataFormat::jb_verbose_date_range($request->start_timedate, $request->end_timedate);
+        $content = DataFormat::formatOutput($request);
 
         if (! \Gate::allows('notification_manage')) {
             return abort(401);
@@ -52,6 +52,9 @@ class HomeController extends Controller
 
         $notification = new Notification();
         $notification->content = $content;
+        $notification->start_date = $request->start_date;
+        $notification->start_hour = $request->start_time;
+        $notification->end_hour = $request->end_time;
         $notification->role_id = $role->id;
         $notification->user_id = \Auth::user()->id;
         $notification->status = config('app.request_status.pending');

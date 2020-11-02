@@ -12,12 +12,11 @@
 - Create public/uploads folder add write permissions to `storage, bootstrap and public/uploads` folder
 - Launch the main URL and login with default credentials `admin@admin.com` - `123456`
 - Setup mail credentials for email sending in .env file
-- This boilerplate has one role (`administrator`), 4 permissions (`users_manage`,`ships_manage`,`notification_manage`,`notification_view`) and one administrator user.
-- Permissions `users_manage`,`ships_manage`,`notification_manage`
+- This boilerplate has one role (`administrator`), 4 permissions (`users_manage`,`notification_manage`,`notification_view`) and one administrator user.
+- Permissions `users_manage`,`notification_manage`
 
 ## App Usage
 - Login as admin@admin.com/123456
-- Add new rank and assign "notification_view" permission to it
-- Create new user(crew member) and assign him newly created rank
-- Create ship and assign users to it
-- Log in as user with different rank and go to dashboard route to see all your notifications
+- Add new role and assign "notification_view" permission to it
+- Create new user and assign him newly created role
+- Log in as user with different role and go to dashboard route to see all your notifications

@@ -5,28 +5,14 @@
         <div class="col-md-10">
             @role('employee')
             <div class="panel panel-default">
-                <div class="panel-heading">Work From Home Requests</div>
+                <div class="panel-heading">Please, select Start Hours AND End Hours for hourly time range during the day, in other case request will be sent as a whole working day</div>
                 <div class="panel-body">
-
-
                     {!! Form::open(['method' => 'POST', 'route' => ['admin.notification.store']]) !!}
-{{--                    <div class="row">--}}
-{{--                        <div class="col-xs-12 form-group">--}}
-{{--                            {!! Form::label('content', 'Content*', ['class' => 'control-label']) !!}--}}
-{{--                            {!! Form::text('content', old('content'), ['class' => 'form-control', 'placeholder' => '', 'required' => '']) !!}--}}
-{{--                            <p class="help-block"></p>--}}
-{{--                            @if($errors->has('content'))--}}
-{{--                                <p class="help-block">--}}
-{{--                                    {{ $errors->first('content') }}--}}
-{{--                                </p>--}}
-{{--                            @endif--}}
-{{--                        </div>--}}
-{{--                    </div>--}}
                     <div class="row">
                         <div class='col-md-4'>
                             <div class="form-group">
                                 <div class='input-group date' id='datetimepicker6'>
-                                    <input type='text' class="form-control" id="start_timedate" name="start_timedate" placeholder="Start date"/>
+                                    <input type='text' class="form-control" id="start_date" name="start_date" placeholder="Start Date" required/>
                                     <span class="input-group-addon">
                                     <span class="glyphicon glyphicon-calendar"></span>
                                     </span>
@@ -36,7 +22,7 @@
                         <div class='col-sm-4'>
                             <div class="form-group">
                                 <div class='input-group date' id='datetimepicker3'>
-                                    <input type='text' class="form-control" placeholder="Start time" />
+                                    <input type='text' class="form-control" id="start_time" name="start_time" placeholder="Start Hours" />
                                     <span class="input-group-addon">
                                    <span class="glyphicon glyphicon-time"></span>
                                    </span>
@@ -46,23 +32,13 @@
                         <div class='col-sm-4'>
                             <div class="form-group">
                                 <div class='input-group date' id='datetimepicker4'>
-                                    <input type='text' class="form-control" placeholder="End time"/>
+                                    <input type='text' class="form-control" id="end_time" name="end_time" placeholder="End Hours"/>
                                     <span class="input-group-addon">
                                    <span class="glyphicon glyphicon-time"></span>
                                    </span>
                                 </div>
                             </div>
                         </div>
-{{--                        <div class='col-md-5'>--}}
-{{--                            <div class="form-group">--}}
-{{--                                <div class='input-group date' id='datetimepicker7'>--}}
-{{--                                    <input type='text' class="form-control" id="end_timedate" name="end_timedate" placeholder="End date/time"/>--}}
-{{--                                    <span class="input-group-addon">--}}
-{{--                                    <span class="glyphicon glyphicon-calendar"></span>--}}
-{{--                                    </span>--}}
-{{--                                </div>--}}
-{{--                            </div>--}}
-{{--                        </div>--}}
                     </div>
 
                     {!! Form::submit(trans('global.app_send'), ['class' => 'btn btn-primary']) !!}
@@ -96,19 +72,17 @@
         $(function () {
             $('#datetimepicker6').datetimepicker({
                 viewMode: 'days',
-                format: 'DD/MM/YYYY'
+                format: 'MM/DD/YYYY',
+                useCurrent: false,
+                minDate:new Date() //var oneHourAgo = new Date((new Date()).valueOf() - 1000*60*60);, var twoDaysAgo = new Date((new Date()).valueOf() - 1000*60*60*24*2);
             });
             $('#datetimepicker3').datetimepicker({
                 format: 'LT'
             });
             $('#datetimepicker4').datetimepicker({
-                useCurrent: false, //Important! See issue #1075,
                 format: 'LT'
             });
-            // $('#datetimepicker7').datetimepicker({
-            //     useCurrent: false, //Important! See issue #1075
-            //     // disabled: true,
-            // });
+
             $("#datetimepicker6").on("dp.change", function (e) {
                 // console.log(new Date(e.date));
                 // $('#datetimepicker7').data("DateTimePicker").date(new Date(e.date));
@@ -116,20 +90,11 @@
                 // $('#datetimepicker7').data("DateTimePicker").minDate(e.date);
 
             });
-            // $("#datetimepicker7").on("dp.change", function (e) {
-            //     // $('#datetimepicker6').data("DateTimePicker").date(new Date(e.date));
-            //     // $('#datetimepicker6').data("DateTimePicker").maxDate(e.date);
-            //     // $('#datetimepicker6').data("DateTimePicker").minDate(e.date);
-            // });
             $("#datetimepicker3").on("dp.change", function (e) {
-                // $('#datetimepicker6').data("DateTimePicker").date(new Date(e.date));
-                // $('#datetimepicker6').data("DateTimePicker").maxDate(e.date);
-                // $('#datetimepicker4').data("DateTimePicker").minDate(e.date);
+
             });
             $("#datetimepicker4").on("dp.change", function (e) {
-                // $('#datetimepicker6').data("DateTimePicker").date(new Date(e.date));
-                // $('#datetimepicker3').data("DateTimePicker").maxDate(e.date);
-                // $('#datetimepicker6').data("DateTimePicker").minDate(e.date);
+
             });
         });
 
@@ -137,6 +102,7 @@
 
             var time = 0;
 
+            //Load datatable with Notification table content
             var table = $('#notification-table').DataTable( {
                 ajax: "{{ route('admin.notification.reload') }}",
                         "columns": [
@@ -176,7 +142,7 @@
                 'order': [[1, 'asc']]
             } );
 
-            // set interval for reloading datatable source
+        // set interval for reloading datatable source
         setInterval(function()
         {
             time++;
