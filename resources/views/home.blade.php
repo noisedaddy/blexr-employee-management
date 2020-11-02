@@ -52,6 +52,8 @@
                                 <tr>
                                     <th>Action</th>
                                     <th>Content</th>
+                                    <th>From</th>
+                                    <th>To</th>
                                     <th>Date Created</th>
                                     <th>By</th>
                                     <th>Request Status</th>
@@ -109,6 +111,8 @@
                         "columns": [
                             { "data": "id" , "bVisible": role == 'administrator' ? true : false },
                             { "data": "content" },
+                            { "data": "start_hour" },
+                            { "data": "end_hour" },
                             { "data": "created_at" },
                             { "data": "created_by" },
                             { "data": "status" },
@@ -131,7 +135,7 @@
                         }
                     },
                     {
-                        'targets': 5,
+                        'targets': 7,
                         'searchable': false,
                         'orderable': false,
                         'className': 'dt-body-center',

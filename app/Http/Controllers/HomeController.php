@@ -36,6 +36,15 @@ class HomeController extends Controller
     }
 
     /**
+     * Redirect to
+     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
+     */
+    public function redirectToMain(){
+
+        return redirect('/admin/home');
+
+    }
+    /**
      * Store notification submissions
      * @param Request $request
      * @return \Illuminate\Http\RedirectResponse|void

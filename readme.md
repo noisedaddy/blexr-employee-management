@@ -11,6 +11,9 @@
 - Launch the main URL and login with default credentials `admin@admin.com` - `123456`
 - Run `sudo chmod -R 777 storage/` for permission rights to storage folder
 - Run `sudo chmod -R 777 bootstrap/` for write permission rights to bootstrap folder
+OR
+- Add permissions to shell script chmod +x ./scripts/setup.sh
+- Run ./scripts/setup.sh
 
 ## App Usage
 - Login as admin@admin.com/123456
