@@ -1,5 +1,5 @@
 #Description
-- PHP 7.4, Mysql 8, Laravel 6
+- PHP 7.4, Mysql 8, Laravel, Bootstrap, jquery, javascript jquery.Datatables
 - Used `spatie permission` package for roles/permissions
 - Used ajax `setInterval()` and jquery `Datatables` to be able to simulate real time notifications when requests arrive on the web page.
 - Customized Laravel Auth package for user authentication
