@@ -21,10 +21,6 @@ Route::match(['get', 'post'], 'register/verification/resend', '\App\Http\Control
 Route::get('register/confirmation/{token?}', '\App\Http\Controllers\Auth\RegisterController@confirmation')
     ->name('register.confirmation');
 
-// Change Password Routes...
-Route::get('change_password', 'Auth\ChangePasswordController@showChangePasswordForm')->name('auth.change_password');
-Route::patch('change_password', 'Auth\ChangePasswordController@changePassword')->name('auth.change_password');
-
 // Password Reset Routes...
 Route::get('password/reset', 'Auth\ForgotPasswordController@showLinkRequestForm')->name('auth.password.reset');
 Route::post('password/email', 'Auth\ForgotPasswordController@sendResetLinkEmail')->name('auth.password.reset');
