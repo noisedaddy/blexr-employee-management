@@ -1,7 +1,8 @@
 ## Install
 - Clone the repository with `git clone`
 - Copy `.env.example` file to `.env` 
-- Setup database and mail credentials for email sending in .env file
+- Create database and add that name in the .env file
+- Setup MAIL credentials to be able to receive mails 
 - Run `composer install`
 - Run `composer update`
 - Run `php artisan key:generate`
