@@ -43,7 +43,6 @@ class UsersController extends Controller
             return abort(401);
         }
         $roles = Role::get()->pluck('name', 'name');
-//        $ships = Ship::get()->pluck('name', 'id');
 
         return view('admin.users.create', compact('roles'));
     }
@@ -112,6 +111,14 @@ class UsersController extends Controller
             return abort(401);
         }
         $user = User::findOrFail($id);
+        $request->merge(
+            array(
+                'ms_office_licence' => $request->has('ms_office_licence') ? 1 : null,
+                'git_repository' => $request->has('git_repository') ? 1 : null,
+                'email_access' => $request->has('email_access') ? 1 : null
+            )
+        );
+
         $user->update($request->all());
         $roles = $request->input('roles') ? $request->input('roles') : [];
         $user->syncRoles($roles);

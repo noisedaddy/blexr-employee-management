@@ -13,10 +13,9 @@
         </div>
 
         <div class="panel-body table-responsive">
-            <table class="table table-bordered table-striped {{ count($users) > 0 ? 'datatable' : '' }} dt-select">
+            <table class="table table-bordered table-striped {{ count($users) > 0 ? 'datatable' : '' }}">
                 <thead>
                     <tr>
-                        <th style="text-align:center;"><input type="checkbox" id="select-all" /></th>
 
                         <th>@lang('global.users.fields.name')</th>
                         <th>@lang('global.users.fields.email')</th>
@@ -30,7 +29,7 @@
                     @if (count($users) > 0)
                         @foreach ($users as $user)
                             <tr style="{{ is_null($user->password) ? 'color: red' : ''}}"  data-entry-id="{{ $user->id }}">
-                                <td></td>
+
 
                                 <td>{{ $user->name }}</td>
                                 <td>{{ $user->email }}</td>
