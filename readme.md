@@ -1,4 +1,4 @@
-## Usage
+## Install
 - Add permissions to shell script chmod +x ./scripts/setup.sh
 - Run ./scripts/setup.sh
 - OR 

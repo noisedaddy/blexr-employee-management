@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Helpers\DataFormat;
 use App\Http\Requests;
+use App\Jobs\SendRequestStatusEmail;
 use App\Notification;
 use App\Ship;
 use App\User;
@@ -91,6 +92,9 @@ class HomeController extends Controller
         $notification = Notification::findOrFail($request->id);
         $notification->update(['status'=>$request->status]);
 
+        if (\Auth::user()->hasRole('administrator')) {
+            dispatch(new SendRequestStatusEmail($notification));
+        }
         return $notification->status;
     }
 }
