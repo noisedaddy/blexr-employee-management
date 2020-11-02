@@ -69,12 +69,13 @@
 @section('javascript')
     <script type="text/javascript">
 
+        //Bootstrap datetimepicker setup
         $(function () {
             $('#datetimepicker6').datetimepicker({
                 viewMode: 'days',
                 format: 'MM/DD/YYYY',
                 useCurrent: false,
-                minDate:new Date() //var oneHourAgo = new Date((new Date()).valueOf() - 1000*60*60);, var twoDaysAgo = new Date((new Date()).valueOf() - 1000*60*60*24*2);
+                minDate:new Date()
             });
             $('#datetimepicker3').datetimepicker({
                 format: 'LT'
