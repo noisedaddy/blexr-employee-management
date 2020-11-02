@@ -1,3 +1,9 @@
+#Description
+- PHP 7.4, Mysql 8, Laravel 6
+- Used spatie permission package for roles/permissions
+- Used ajax setInterval() and jquery Datatables to be able to simulate real time notifications when requests arrive on the web page.
+- Customized Laravel Auth package for user authentication
+
 ## Install
 - Clone the repository with `git clone`
 - Copy `.env.example` file to `.env` 
@@ -22,6 +28,3 @@ OR
 - Log in as a new user in a different browser and go to the `Requests` sidebar to be able to send work-from-home requests
 - Go to the `Requests` sidebar logged as `admin` and `Approve/Reject` requests 
 - When selecting a time from a given date using bootstrap datetimepickers, the Start time must be smaller than the End time. Other case alert will pop up with a warning.- This boilerplate has two roles (`administrator` and `employee`) with 3 permissions (`users_manage`,`notification_manage`,`notification_view`);
-
-#Description
-PHP 7.4, Mysql 8, Laravel 6
