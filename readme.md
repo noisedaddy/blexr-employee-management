@@ -19,6 +19,9 @@ OR
 - Login as admin@admin.com/123456
 - Add new User and assign `"employee"` role to him/her
 - New user will receive email with confirmation link which takes him/her to the landing page where he can log in. 
-- Log in as new user in different browser and go to the `Requests` sidebar to be able to send work-from-home requests
+- Log in as a new user in a different browser and go to the `Requests` sidebar to be able to send work-from-home requests
 - Go to the `Requests` sidebar logged as `admin` and `Approve/Reject` requests 
-- This boilerplate has two roles (`administrator` and `employee`) with 3 permissions (`users_manage`,`notification_manage`,`notification_view`);
+- When selecting a time from a given date using bootstrap datetimepickers, the Start time must be smaller than the End time. Other case alert will pop up with a warning.- This boilerplate has two roles (`administrator` and `employee`) with 3 permissions (`users_manage`,`notification_manage`,`notification_view`);
+
+#Description
+PHP 7.4, Mysql 8, Laravel 6
