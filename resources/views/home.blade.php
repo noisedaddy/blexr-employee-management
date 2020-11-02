@@ -207,8 +207,8 @@
 
             if ((start == null) && (end == null)) return true;
 
-            if (start >= end) {
-                alert("Please enter proper date. End time smaller then the Start time.")
+            if ((start >= end) || ((start == null) || (end == null))) {
+                alert("Please enter proper date. Start time must be smaller then the End time")
                 return false;
             }
 
