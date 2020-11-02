@@ -59,15 +59,22 @@ class UsersController extends Controller
         if (! Gate::allows('users_manage')) {
             return abort(401);
         }
+
+        $request->merge(
+            array(
+                'ms_office_licence' => $request->has('ms_office_licence') ? 1 : null,
+                'git_repository' => $request->has('git_repository') ? 1 : null,
+                'email_access' => $request->has('email_access') ? 1 : null
+            )
+        );
+
         $user = User::create($request->all());
 
         $roles = $request->input('roles') ? $request->input('roles') : [];
         $user->assignRole($roles);
-//        if (! is_null($request->ships) && isset($request->ships)) {
-//            $user->ship()->associate($request->ships[0]);
-//        }
         $user->confirmation_token = $this->create_token();
         if ($user->save()) {
+            //Send registration email to user
             dispatch(new SendEmail($user));
         };
         return redirect()->route('admin.users.index');
@@ -88,7 +95,6 @@ class UsersController extends Controller
         $roles = Role::get()->pluck('name', 'name');
 
         $user = User::findOrFail($id);
-//        $ships = Ship::get()->pluck('name', 'name');
 
         return view('admin.users.edit', compact('user', 'roles'));
     }
@@ -109,9 +115,6 @@ class UsersController extends Controller
         $user->update($request->all());
         $roles = $request->input('roles') ? $request->input('roles') : [];
         $user->syncRoles($roles);
-//        if (! is_null($request->ships) && isset($request->ships)) {
-//            $user->ship()->associate(Ship::where('name', $request->ships[0])->first()->id);
-//        }
         $user->save();
         return redirect()->route('admin.users.index');
     }

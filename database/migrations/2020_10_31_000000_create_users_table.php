@@ -19,6 +19,9 @@ class CreateUsersTable extends Migration
             $table->string('password')->nullable();
             $table->string('remember_token')->nullable();
             $table->string('confirmation_token')->nullable();
+            $table->varchar('git_repository')->nullable();
+            $table->tinyInteger('email_access')->nullable();
+            $table->tinyInteger('ms_office_licence')->nullable();
             $table->string('created_by')->nullable();
             $table->string('updated_by')->nullable();
             $table->timestamps();

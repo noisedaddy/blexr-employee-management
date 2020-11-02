@@ -23,26 +23,46 @@
 {{--                        </div>--}}
 {{--                    </div>--}}
                     <div class="row">
-                        <div class='col-md-5'>
+                        <div class='col-md-4'>
                             <div class="form-group">
                                 <div class='input-group date' id='datetimepicker6'>
-                                    <input type='text' class="form-control" id="start_timedate" name="start_timedate" placeholder="Start date/time"/>
+                                    <input type='text' class="form-control" id="start_timedate" name="start_timedate" placeholder="Start date"/>
                                     <span class="input-group-addon">
                                     <span class="glyphicon glyphicon-calendar"></span>
                                     </span>
                                 </div>
                             </div>
                         </div>
-                        <div class='col-md-5'>
+                        <div class='col-sm-4'>
                             <div class="form-group">
-                                <div class='input-group date' id='datetimepicker7'>
-                                    <input type='text' class="form-control" id="end_timedate" name="end_timedate" placeholder="End date/time"/>
+                                <div class='input-group date' id='datetimepicker3'>
+                                    <input type='text' class="form-control" placeholder="Start time" />
                                     <span class="input-group-addon">
-                                    <span class="glyphicon glyphicon-calendar"></span>
-                                    </span>
+                                   <span class="glyphicon glyphicon-time"></span>
+                                   </span>
                                 </div>
                             </div>
                         </div>
+                        <div class='col-sm-4'>
+                            <div class="form-group">
+                                <div class='input-group date' id='datetimepicker4'>
+                                    <input type='text' class="form-control" placeholder="End time"/>
+                                    <span class="input-group-addon">
+                                   <span class="glyphicon glyphicon-time"></span>
+                                   </span>
+                                </div>
+                            </div>
+                        </div>
+{{--                        <div class='col-md-5'>--}}
+{{--                            <div class="form-group">--}}
+{{--                                <div class='input-group date' id='datetimepicker7'>--}}
+{{--                                    <input type='text' class="form-control" id="end_timedate" name="end_timedate" placeholder="End date/time"/>--}}
+{{--                                    <span class="input-group-addon">--}}
+{{--                                    <span class="glyphicon glyphicon-calendar"></span>--}}
+{{--                                    </span>--}}
+{{--                                </div>--}}
+{{--                            </div>--}}
+{{--                        </div>--}}
                     </div>
 
                     {!! Form::submit(trans('global.app_send'), ['class' => 'btn btn-primary']) !!}
@@ -60,7 +80,6 @@
                                     <th>By</th>
                                     <th>Request Status</th>
                                     <th>Cancel Request</th>
-
                                 </tr>
                                 </thead>
                             </table>
@@ -75,18 +94,43 @@
     <script type="text/javascript">
 
         $(function () {
-            $('#datetimepicker6').datetimepicker();
-            $('#datetimepicker7').datetimepicker({
-                useCurrent: false //Important! See issue #1075
+            $('#datetimepicker6').datetimepicker({
+                viewMode: 'days',
+                format: 'DD/MM/YYYY'
             });
+            $('#datetimepicker3').datetimepicker({
+                format: 'LT'
+            });
+            $('#datetimepicker4').datetimepicker({
+                useCurrent: false, //Important! See issue #1075,
+                format: 'LT'
+            });
+            // $('#datetimepicker7').datetimepicker({
+            //     useCurrent: false, //Important! See issue #1075
+            //     // disabled: true,
+            // });
             $("#datetimepicker6").on("dp.change", function (e) {
-                $('#datetimepicker7').data("DateTimePicker").minDate(e.date);
-            });
-            $("#datetimepicker7").on("dp.change", function (e) {
-                $('#datetimepicker6').data("DateTimePicker").maxDate(e.date);
-            });
+                // console.log(new Date(e.date));
+                // $('#datetimepicker7').data("DateTimePicker").date(new Date(e.date));
+                // $('#datetimepicker7').data("DateTimePicker").maxDate(e.date);
+                // $('#datetimepicker7').data("DateTimePicker").minDate(e.date);
 
-            console.log();
+            });
+            // $("#datetimepicker7").on("dp.change", function (e) {
+            //     // $('#datetimepicker6').data("DateTimePicker").date(new Date(e.date));
+            //     // $('#datetimepicker6').data("DateTimePicker").maxDate(e.date);
+            //     // $('#datetimepicker6').data("DateTimePicker").minDate(e.date);
+            // });
+            $("#datetimepicker3").on("dp.change", function (e) {
+                // $('#datetimepicker6').data("DateTimePicker").date(new Date(e.date));
+                // $('#datetimepicker6').data("DateTimePicker").maxDate(e.date);
+                // $('#datetimepicker4').data("DateTimePicker").minDate(e.date);
+            });
+            $("#datetimepicker4").on("dp.change", function (e) {
+                // $('#datetimepicker6').data("DateTimePicker").date(new Date(e.date));
+                // $('#datetimepicker3').data("DateTimePicker").maxDate(e.date);
+                // $('#datetimepicker6').data("DateTimePicker").minDate(e.date);
+            });
         });
 
             var role = {!! json_encode($role) !!};
