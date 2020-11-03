@@ -16,8 +16,8 @@
 
 ## Install
 - Clone the repository with `git clone`
-- Copy `.env.example` file to `.env` 
-- Create database and add that name in the .env file
+- Copy `.env.example` file to `.env` with `cp .env.example .env`
+- Create database and add that name in the .env file `DB_DATABASE=`
 - Setup MAIL credentials to be able to receive mails 
 - Run `composer install`
 - Run `composer update`
