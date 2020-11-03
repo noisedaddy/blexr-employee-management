@@ -31,6 +31,14 @@ OR
 - Add permissions to shell script `chmod +x ./scripts/setup.sh`
 - Run `./scripts/setup.sh`
 
+#Tests
+- Create the `database/test.sqlite` file with `touch database/test.sqlite`
+- Add `DB_DATABASE=/absolute/path/to/test.sqlite` in the `.env.testing` variable
+- Run `php artisan migrate:fresh --seed --env=testing` to populate testing database
+- Run `php artisan serve`
+- Add `http://127.0.0.1:8000/` to `.env.testing` like `APP_URL=http://127.0.0.1:8000/`
+- Run `./vendor/phpunit/phpunit/phpunit`
+ 
 ## App Usage
 - Login as admin@admin.com/123456
 - Add new User and assign `"employee"` role to him/her

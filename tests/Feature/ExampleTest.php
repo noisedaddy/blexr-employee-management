@@ -2,6 +2,7 @@
 
 namespace Tests\Feature;
 
+use App\User;
 use Tests\TestCase;
 use Illuminate\Foundation\Testing\WithoutMiddleware;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
@@ -16,8 +17,9 @@ class ExampleTest extends TestCase
      */
     public function testBasicTest()
     {
-        $response = $this->get('/');
 
-        $response->assertStatus(200);
+        $user = new User(['name'=>'Veljko']);
+        $this->assertEquals('Veljko', $user->name);
+
     }
 }
