@@ -22,6 +22,7 @@
 - Run `composer install`
 - Run `composer update`
 - Run `php artisan key:generate`
+- Run `php artisan optimize:clear` to clear cache and config
 - Run `php artisan migrate:fresh --seed` (it has some seeded data - see below)
 - If error `(A `` permission already exists for guard web)` occurs after migration, run `sudo php artisan cache:forget spatie.permission.cache && sudo php artisan cache:clear` to clear permission cache
 - Launch the main URL and login with default credentials `admin@admin.com` - `123456`
