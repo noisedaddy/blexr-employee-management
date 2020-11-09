@@ -7,7 +7,7 @@
             <div class="panel panel-default">
                 <div class="panel-heading">Please, select Start Hours AND End Hours for hourly time range during the day, in other case request will be sent as a whole working day</div>
                 <div class="panel-body">
-                    {!! Form::open(['method' => 'POST', 'route' => ['admin.notification.store']]) !!}
+                    {!! Form::open(['method' => 'POST', 'id' => 'makeRequestDateForm', 'route' => ['admin.notification.store']]) !!}
                     <div class="row">
                         <div class='col-md-4'>
                             <div class="form-group">
@@ -200,7 +200,7 @@
             }
 
             //Start/End validation time
-        $("form").submit(function(){
+        $("#makeRequestDateForm").submit(function(){
 
             var start = $('#datetimepicker3').data("DateTimePicker").date();
             var end = $('#datetimepicker4').data("DateTimePicker").date();
